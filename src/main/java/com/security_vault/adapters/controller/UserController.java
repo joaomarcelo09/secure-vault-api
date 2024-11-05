@@ -2,6 +2,8 @@ package com.security_vault.adapters.controller;
 
 import com.security_vault.adapters.dto.CreateUserDto;
 import com.security_vault.adapters.dto.CreateUserResponseDto;
+import com.security_vault.adapters.dto.LoginUserDto;
+import com.security_vault.adapters.dto.LoginUserResponseDto;
 import com.security_vault.application.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,13 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-
     @PostMapping("/auth/register")
     public ResponseEntity<CreateUserResponseDto> register(@RequestBody CreateUserDto user) {
         return ResponseEntity.ok(userService.createUser(user));
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity<LoginUserResponseDto> loginUser(@RequestBody LoginUserDto user) {
+        return ResponseEntity.ok(userService.loginUser(user));
     }
 }

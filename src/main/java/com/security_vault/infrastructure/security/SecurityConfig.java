@@ -25,7 +25,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/swagger-ui/**","/swagger-ui.html/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/user/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/user/auth/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/user/auth").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

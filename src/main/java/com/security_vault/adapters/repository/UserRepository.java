@@ -1,4 +1,4 @@
-package com.security_vault.infrastructure.repository;
+package com.security_vault.adapters.repository;
 
 import com.security_vault.domain.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,9 +2,12 @@ package com.security_vault.application.service;
 
 import com.security_vault.adapters.dto.CreateUserDto;
 import com.security_vault.adapters.dto.CreateUserResponseDto;
+import com.security_vault.adapters.dto.LoginUserDto;
+import com.security_vault.adapters.dto.LoginUserResponseDto;
+import com.security_vault.domain.exception.PasswordIncorrect;
 import com.security_vault.domain.exception.UserNotFound;
 import com.security_vault.domain.model.Users;
-import com.security_vault.infrastructure.repository.UserRepository;
+import com.security_vault.adapters.repository.UserRepository;
 import com.security_vault.infrastructure.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,5 +44,18 @@ public class UserService {
         return new CreateUserResponseDto(
                 newUser.getName(), newUser.getEmail(),token
         );
+    }
+
+    public LoginUserResponseDto loginUser(LoginUserDto user) {
+
+        Users findUser = this.findOne(null, user.email());
+
+        if(!passwordEncoder.matches(user.password(), findUser.getPassword())) {
+            throw new PasswordIncorrect();
+        }
+
+        String token = tokenService.generateToken(findUser);
+
+        return new LoginUserResponseDto(findUser.getName(), findUser.getEmail(), token);
     }
 }
