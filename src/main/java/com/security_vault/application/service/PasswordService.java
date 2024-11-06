@@ -1,5 +1,6 @@
 package com.security_vault.application.service;
 
+import com.security_vault.adapters.dto.PasswordFindAllResponseDto;
 import com.security_vault.adapters.dto.PasswordGenerateResponseDto;
 import com.security_vault.adapters.repository.PasswordRepository;
 import com.security_vault.domain.model.Password;
@@ -7,6 +8,7 @@ import com.security_vault.domain.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -39,6 +41,19 @@ public class PasswordService {
 
     }
 
+    public List<PasswordFindAllResponseDto> findAllPassword(String id_user) {
+
+        List<Password> passwords = passwordRepository.findAllByIdUser(id_user);
+
+        List<PasswordFindAllResponseDto> passwordResponse = new java.util.ArrayList<>(List.of());
+
+        for (Password pass : passwords) {
+            passwordResponse.add(new PasswordFindAllResponseDto(pass.getName(), pass.getPassword()));
+        }
+
+        return passwordResponse;
+    }
+
     private String generatePassword(String title) {
 
         // Get the first 3 letters of the name and capitalize the first letter
@@ -68,7 +83,8 @@ public class PasswordService {
                 // Choose a random position to insert
                 int position = random.nextInt(generatedString.length() - 1) + 1;
                 // Insert random character
-                generatedString = generatedString.substring(0, position) + randomChar + generatedString.substring(position);
+                generatedString = generatedString.substring(0, position) + randomChar
+                        + generatedString.substring(position);
                 break;
         }
 

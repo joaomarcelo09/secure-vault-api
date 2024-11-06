@@ -6,13 +6,11 @@ import com.security_vault.adapters.dto.CreateUserResponseDto;
 import com.security_vault.adapters.dto.LoginUserDto;
 import com.security_vault.adapters.dto.LoginUserResponseDto;
 import com.security_vault.application.service.UserService;
-import com.security_vault.domain.exception.PasswordIncorrect;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +44,7 @@ public class UserController {
     @PostMapping("/auth")
     public ResponseEntity<LoginUserResponseDto> loginUser(@RequestBody LoginUserDto user) {
 
-        if(!bucket.tryConsume(1)) {
+        if (!bucket.tryConsume(1)) {
             throw new TooManyRequest();
         }
 
