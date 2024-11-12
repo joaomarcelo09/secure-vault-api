@@ -2,6 +2,7 @@ package com.security_vault.application.service;
 
 import com.security_vault.adapters.dto.CreateUserDto;
 import com.security_vault.adapters.dto.CreateUserResponseDto;
+import com.security_vault.adapters.dto.EditUserResponseDto;
 import com.security_vault.adapters.dto.LoginUserDto;
 import com.security_vault.adapters.dto.LoginUserResponseDto;
 import com.security_vault.domain.exception.PasswordIncorrect;
@@ -42,15 +43,27 @@ public class UserService {
         userRepository.save(newUser);
 
         return new CreateUserResponseDto(
-                newUser.getName(), newUser.getEmail(),token
-        );
+                newUser.getName(), newUser.getEmail(), token);
+    }
+
+    public EditUserResponseDto editUser(String id_user, CreateUserDto user) {
+
+        Users findUser = this.findOne(id_user, null);
+
+        findUser.setName(user.name());
+        findUser.setEmail(user.email());
+        findUser.setPassword(user.password());
+
+        userRepository.save(findUser);
+
+        return new EditUserResponseDto(findUser.getName(), findUser.getEmail());
     }
 
     public LoginUserResponseDto loginUser(LoginUserDto user) {
 
         Users findUser = this.findOne(null, user.email());
 
-        if(!passwordEncoder.matches(user.password(), findUser.getPassword())) {
+        if (!passwordEncoder.matches(user.password(), findUser.getPassword())) {
             throw new PasswordIncorrect();
         }
 

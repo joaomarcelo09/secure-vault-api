@@ -3,6 +3,7 @@ package com.security_vault.adapters.controller;
 import com.security_vault.adapters.controller.exception.TooManyRequest;
 import com.security_vault.adapters.dto.CreateUserDto;
 import com.security_vault.adapters.dto.CreateUserResponseDto;
+import com.security_vault.adapters.dto.EditUserResponseDto;
 import com.security_vault.adapters.dto.LoginUserDto;
 import com.security_vault.adapters.dto.LoginUserResponseDto;
 import com.security_vault.application.service.UserService;
@@ -13,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +42,11 @@ public class UserController {
     @PostMapping("/auth/register")
     public ResponseEntity<CreateUserResponseDto> register(@RequestBody CreateUserDto user) {
         return ResponseEntity.ok(userService.createUser(user));
+    }
+
+    @PatchMapping()
+    public ResponseEntity<EditUserResponseDto> editUser(@RequestBody CreateUserDto user, @RequestAttribute("user") String userID) {
+        return ResponseEntity.ok(userService.editUser(userID, user));
     }
 
     @PostMapping("/auth")
