@@ -10,6 +10,7 @@ import com.security_vault.domain.exception.UserNotFound;
 import com.security_vault.domain.model.Users;
 import com.security_vault.adapters.repository.UserRepository;
 import com.security_vault.infrastructure.security.TokenService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, TokenService tokenService, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, TokenService tokenService,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
         this.passwordEncoder = passwordEncoder;
@@ -57,6 +60,14 @@ public class UserService {
         userRepository.save(findUser);
 
         return new EditUserResponseDto(findUser.getName(), findUser.getEmail());
+    }
+
+    public void deleteUser(String id_user) {
+
+        Users findUser = this.findOne(id_user, null);
+
+        userRepository.delete(findUser);
+
     }
 
     public LoginUserResponseDto loginUser(LoginUserDto user) {

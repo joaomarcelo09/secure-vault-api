@@ -54,6 +54,14 @@ public class PasswordService {
         return passwordResponse;
     }
 
+    public void deleteAllPasswords(String userID) {
+
+        List<Password> passwords = passwordRepository.findAllByIdUser(userID);
+
+        passwordRepository.deleteAll(passwords);
+
+    }
+
     private String generatePassword(String title) {
 
         // Get the first 3 letters of the name and capitalize the first letter
