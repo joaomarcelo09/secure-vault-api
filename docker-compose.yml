@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -9,17 +7,19 @@ services:
       - "8080:8080"
     environment:
       SPRING_APPLICATION_NAME: security-vault
-      SPRING_DATASOURCE_URL: jdbc:postgresql://admin:123456@localhost:5432/securevault-db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/securevault
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+    depends_on:
+      - postgres
 
   postgres:
     container_name: securevault-api
-      image: postgres
+    image: postgres
     environment:
-        POSTGRES_DB: securevault
-        POSTGRES_USER: admin
-        POSTGRES_PASSWORD: 123456
-        ports:
-           - 5432:5432 
+      POSTGRES_DB: securevault
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - 5432:5432 
